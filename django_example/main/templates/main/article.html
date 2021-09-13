@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}{{article.article_title}}{% endblock %}
+
+{% block content %}
+
+    <h2>{{article.article_title}}</h2>
+
+    <p>{{article.article_text}}</p>
+
+    <em>{{article.pub_date}}</em>
+
+    {% if article.was_publish_recently %}
+        [Новая статья]
+    {% endif %}
+
+    <hr>
+
+    Последние комментарии: <br>
+    {% if last_comments %}
+        {% for c in last_comments %}
+            <p>
+                <strong>{{c.author_name}}</strong><br>
+                <p>{{c.comment_text}}</p>
+            </p>
+        {% endfor %}
+    {% else %}
+        Комментариев пока нет будьте первым =)
+    {% endif %}
+
+    <hr>
+
+    <form action="{% url 'main:post_comment' article.id %}" method="post">
+        {% csrf_token %}
+        <input type="text" required placeholder="Ваше имя" name="name" class="form-control col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3"><br>
+        <textarea name="text" required placeholder="Текст комментария" cols="60" rows="6" class="form-control"></textarea><br>
+
+        <button type="submit" class="btn btn-success">Отправить комментарий</button>
+    </form>
+
+{% endblock %}
