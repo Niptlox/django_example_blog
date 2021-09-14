@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Редактирвание статьи{% endblock %}
+
+{% block content %}
+    <h4>Редактирвание статьи</h4>
+    <form action="{% url 'main:article_edit' %}" method="post">
+        {% csrf_token %}
+        <input type="text" required placeholder="Название статьи" name="name" class="form-control col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3"><br>
+        <textarea name="text" required placeholder="Текст статьи (html)" cols="60" rows="16" class="form-control"></textarea><br>
+
+        <button type="submit" class="btn btn-success">Сохранить</button>
+    </form>
+
+{% endblock %}

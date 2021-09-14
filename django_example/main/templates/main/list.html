@@ -5,11 +5,17 @@
 {% block content %}
 
     {% if last_articles %}
-        Последние статьи: <br>
+        <h2>Последние статьи:</h2>
+        <div class="panel-group">
+            {% for a in last_articles %}
+                <div class="panel panel-default">
+                    <br>
+                    <div class="panel-body"><a href="{% url 'main:article' a.id %}">{{a.article_title}}</a></div>
+                    <br>
+                </div>
 
-        {% for a in last_articles %}
-            <a href="{% url 'main:article' a.id %}">{{a.article_title}}</a> <br>
-        {% endfor %}
+            {% endfor %}
+        </div>
     {% else %}
         Статей нет =(
     {% endif %}
