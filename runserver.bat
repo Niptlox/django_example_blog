@@ -1,0 +1,1 @@
+Start venv/Scripts/python.exe django_example/manage.py runserver
