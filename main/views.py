@@ -91,7 +91,7 @@ def post_comment(request: HttpRequest, article_id):
     except Article.DoesNotExist:
         raise Http404("Статья не найдена!")
 
-    a.comment_set.create(author_name=request.POST['name'], comment_text=request.POST['text'])
+    a.comment_set.create(author_name=request.user.username, comment_text=request.POST['text'])
     return HttpResponseRedirect(reverse("main:article", args=(a.id,)))
 
 

@@ -30,14 +30,21 @@
 
         <hr>
 
-        Последние комментарии: <br>
+        <h6>Последние комментарии:</h6>
         {% if last_comments %}
+            <div class="cards">
+
             {% for c in last_comments %}
-                <p>
-                    <strong>{{c.author_name}}</strong><br>
-                    <p>{{c.comment_text}}</p>
-                </p>
+                <div class="card mb-3">
+<!--                    <div class="card-header bg-transparent border-primary">-->
+                    <div class="card-body border-primary border-dark">
+                            <p class="card-title"><strong class="text-right">{{c.author_name}}</strong></p>
+<!--                        <hr>-->
+                            <p class="card-text">{{c.comment_text}}</p>
+                    </div>
+                </div>
             {% endfor %}
+            </div>
         {% else %}
             Комментариев пока нет будьте первым =)
         {% endif %}
@@ -46,10 +53,13 @@
 
         <form action="{% url 'main:post_comment' article.id %}" method="post">
             {% csrf_token %}
-            <input type="text" required placeholder="Ваше имя" name="name" class="form-control col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3"><br>
             <textarea name="text" required placeholder="Текст комментария" cols="60" rows="6" class="form-control"></textarea><br>
+            {% if user.is_authenticated %}
+                <button type="submit" class="btn btn-success">Отправить комментарий</button>
+            {% else %}
+                <span class="warning">Чтобы писать комментарии надо <a href="{% url 'main:login' %}">авторизоваться</a></span>
+            {% endif %}
 
-            <button type="submit" class="btn btn-success">Отправить комментарий</button>
         </form>
         <br>
     </div>
