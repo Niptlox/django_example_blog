@@ -92,7 +92,7 @@ def post_comment(request: HttpRequest, article_id):
         raise Http404("Статья не найдена!")
 
     a.comment_set.create(author_name=request.user.username, comment_text=request.POST['text'])
-    return HttpResponseRedirect(reverse("main:article", args=(a.id,)))
+    return HttpResponseRedirect(reverse("main:article", args=(a.id,))+"#comments")
 
 
 def user_register(request: HttpRequest):
