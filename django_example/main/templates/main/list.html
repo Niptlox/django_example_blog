@@ -6,13 +6,31 @@
 
     {% if last_articles %}
         <h2>Последние статьи:</h2>
-        <div class="panel-group">
+        <br>
+        <div class="cards">
             {% for a in last_articles %}
-                <div class="panel panel-default">
-                    <br>
-                    <div class="panel-body"><a href="{% url 'main:article' a.id %}">{{a.article_title}}</a></div>
-                    <br>
+                <div class="card mb-3">
+                    <div class="card-header bg-transparent border-primary">
+                        {% if a.user %} {{a.user.username}}
+                        {% else %} Noname
+                        {% endif %}
+                    </div>
+                    {% if a.introduction_img %}
+                        <img src="{{a.introduction_img}}" class="card-img-top" alt="Img {{a.article_title}}">
+                    {% endif %}
+
+                    <div class="card-body">
+                        <h5 class="card-title">{{a.article_title}}</h5>
+                        <p class="card-text">{{a.article_introduction|safe}}</p>
+                        <div class="row">
+                                <div class="col-auto mr-auto"><a href="{% url 'main:article' a.id %}" class="btn btn-outline-primary">Читать статью</a></div>
+                                <div class="col-auto"><p class="card-text"><small class="text-muted">{{a.pub_date}}</small></p></div>
+
+
+                        </div>
+                    </div>
                 </div>
+
 
             {% endfor %}
         </div>

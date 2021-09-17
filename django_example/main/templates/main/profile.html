@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %} Профиль {% endblock %}
+
+{% block content %}
+
+<div class="container shadow-lg bg-white rounded">
+    {% if user.is_authenticated %}
+        <h4>Профиль</h4>
+        <div class=" row align-items-end">
+            <div class="col-2">
+                {% if user.profile.user_img %}
+                    <img src="{{user.profile.user_img}}" alt="mdo" width="128" height="128" class="rounded-sm">
+                {% else %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                      <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                    </svg>
+                {% endif %}
+            </div>
+            <div class="col-2">
+                Пользователь <br>
+                <span class="font-weight-bold" style="font-size: 20px">{{ user.username }}</span>
+            </div>
+
+        </div>
+        <div>
+            <h5>О себе:</h5>
+            {% if user.profile.bio %}
+                <p>{{ user.profile.bio }}</p>
+            {% else %}
+                <p>Нету</p>
+            {% endif %}
+        </div>
+
+        <hr>
+
+        <div>
+            <h5>Публикации <a class="bt" href="{% url 'main:article_edit' %}">Добавить</a></h5>
+            {% if user.article_set %}
+                {% for a in user.article_set.all %}
+                    <h5><a href="{% url 'main:article' a.id %}">{{a.article_title}}</a></h5>
+                {% endfor %}
+            {% else %}
+                <p>Нету</p>
+            {% endif %}
+
+        </div>
+        <br>
+
+
+    {% else %}
+        <p class="text-center">Вам необходимо <a href="{% url 'main:login' %}">войти</a> в систему</p>
+    {% endif %}
+</div>
+
+{% endblock %}
