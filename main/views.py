@@ -75,8 +75,8 @@ def article_edit(request: HttpRequest):
         Http404("Пользователь не авторизован!")
     if request.method == "POST":
         a = Article(user=current_user,
-                    article_title=request.POST['name'], article_text=request.POST['text'],
-                    article_introduction=request.POST['intro'],
+                    article_title=request.POST['name'], article_text=request.POST['text'].replace("<script", "<scripts"),
+                    article_introduction=request.POST['intro'].replace("<script", "<scripts"),
                     pub_date=timezone.now(),
                     )
         a.save()
