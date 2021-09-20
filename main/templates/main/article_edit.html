@@ -5,11 +5,13 @@
 {% block content %}
     {% if user.is_authenticated %}
         <h4>Редактирвание статьи пользователя {{ user.username }}</h4>
-        <form action="{% url 'main:article_edit' %}" method="post">
+        <form action="{% if article %} {% url 'main:article_edit' article.id %} {% else %} {% url 'main:article_create' %} {% endif %}" method="post">
             {% csrf_token %}
-            <input type="text" required placeholder="Название статьи" name="name" class="form-control col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3"><br>
-            <textarea name="intro" required placeholder="Вступление статьи (html)" rows="8" class="form-control"></textarea><br>
-            <textarea name="text" required placeholder="Текст статьи (html)" rows="16" class="form-control"></textarea><br>
+            <input value="{% if article %} {{ article.article_title}} {% endif %}" type="text"
+                   required placeholder="Название статьи" name="name"
+                   class="form-control col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3"><br>
+            <textarea name="intro" required placeholder="Вступление статьи (html)" rows="8" class="form-control">{% if article %} {{ article.article_introduction}} {% endif %}</textarea><br>
+            <textarea name="text" required placeholder="Текст статьи (html)" rows="16" class="form-control">{% if article %} {{ article.article_text}} {% endif %}</textarea><br>
 
             <button type="submit" class="btn btn-success">Сохранить</button>
         </form>

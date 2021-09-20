@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect, Http404, HttpRequest
+from django.http import HttpResponseRedirect, Http404, HttpRequest, HttpResponseForbidden
 from django.urls import reverse
 from django.utils import timezone
 from django.shortcuts import render, redirect
@@ -69,20 +69,55 @@ def article(request: HttpRequest, article_id):
     return render(request, 'main/article.html', {"article": a, "last_comments": c})
 
 
-def article_edit(request: HttpRequest):
+def article_create(request: HttpRequest):
     current_user = request.user
     if not request.user.is_authenticated:
         Http404("Пользователь не авторизован!")
     if request.method == "POST":
         a = Article(user=current_user,
-                    article_title=request.POST['name'], article_text=request.POST['text'].replace("<script", "<scripts"),
+                    article_title=request.POST['name'],
+                    article_text=request.POST['text'].replace("<script", "<scripts"),
                     article_introduction=request.POST['intro'].replace("<script", "<scripts"),
                     pub_date=timezone.now(),
                     )
         a.save()
         return HttpResponseRedirect(reverse("main:index"))
     else:
-        return render(request, 'main/article_edit.html')
+        return render(request, 'main/article_edit.html', {"article": None})
+
+
+def article_del(request: HttpRequest, article_id):
+    if not request.user.is_authenticated:
+        Http404("Пользователь не авторизован!")
+    try:
+        a: Article = Article.objects.get(id=article_id)
+    except Article.DoesNotExist:
+        raise Http404("Статья не найдена!")
+    if not a.user or a.user.id != request.user.id:
+        return HttpResponseForbidden("Ошибка доступа! " + str(a.user))
+    a.delete()
+    return HttpResponseRedirect(reverse("main:profile"))
+
+
+def article_edit(request: HttpRequest, article_id):
+    if not request.user.is_authenticated:
+        Http404("Пользователь не авторизован!")
+    try:
+        a: Article = Article.objects.get(id=article_id)
+    except Article.DoesNotExist:
+        raise Http404("Статья не найдена!")
+    if not a.user or a.user.id != request.user.id:
+        return HttpResponseForbidden("Ошибка доступа! " + str(a.user))
+
+    if request.method == "POST":
+        a.article_title = request.POST['name']
+        a.article_text = request.POST['text'].replace("<script", "<scripts")
+        a.article_introduction = request.POST['intro'].replace("<script", "<scripts")
+        a.pub_date = timezone.now()
+        a.save()
+        return HttpResponseRedirect(reverse("main:profile"))
+    else:
+        return render(request, 'main/article_edit.html', {"article": a})
 
 
 def post_comment(request: HttpRequest, article_id):
@@ -92,7 +127,7 @@ def post_comment(request: HttpRequest, article_id):
         raise Http404("Статья не найдена!")
 
     a.comment_set.create(author_name=request.user.username, comment_text=request.POST['text'])
-    return HttpResponseRedirect(reverse("main:article", args=(a.id,))+"#comments")
+    return HttpResponseRedirect(reverse("main:article", args=(a.id,)) + "#comments")
 
 
 def user_register(request: HttpRequest):

@@ -35,10 +35,14 @@
         <hr>
 
         <div>
-            <h5>Публикации <a class="bt" href="{% url 'main:article_edit' %}">Добавить</a></h5>
+            <h5>Публикации <a class="bt" href="{% url 'main:article_create' %}">Добавить</a></h5>
             {% if user.article_set %}
                 {% for a in user.article_set.all %}
-                    <h5><a href="{% url 'main:article' a.id %}">{{a.article_title}}</a></h5>
+                    <p>
+                        <h5><a href="{% url 'main:article' a.id %}">{{a.article_title}}</a></h5>
+                        <a class="bt" href="{% url 'main:article_edit' a.id %}">Редактировать</a>
+                        <a class="bt" href="{% url 'main:article_del' a.id %}">Удалить</a>
+                    </p>
                 {% endfor %}
             {% else %}
                 <p>Нету</p>

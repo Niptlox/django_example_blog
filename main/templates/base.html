@@ -18,7 +18,7 @@
         <h3 class="my-0 mr-md-auto font-weight-large "><a href="/" class="badge badge-dark" style="box-shadow: none;">Bimp</a></h3>
         <nav class="my-2 my-md-0 mr-md-3">
             <a class="p-2 text-dark" href="/">Главная</a>
-            <a class="p-2 text-dark" href="{% url 'main:article_edit' %}">Добавить</a>
+            <a class="p-2 text-dark" href="{% url 'main:article_create' %}">Добавить</a>
             <a class="p-2 text-dark" href="#">Помощь</a>
         </nav>
         <form class="col-12 col-lg-auto ">
@@ -45,7 +45,7 @@
             <ul class="dropdown-menu text-small dropdown-menu-right" aria-labelledby="dropdownMenuOffset">
                 {% if user.is_authenticated %}
                     <li><a class="dropdown-item" href="{% url 'main:profile' %}">{{ user.username }}</a></li>
-                    <li><a class="dropdown-item" href="{% url 'main:article_edit' %}">Добавить</a></li>
+                    <li><a class="dropdown-item" href="{% url 'main:article_create' %}">Добавить</a></li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>
