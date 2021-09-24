@@ -3,49 +3,67 @@
 {% block title %}{{article.article_title}}{% endblock %}
 
 {% block content %}
-    <div class="container shadow-lg bg-white rounded">
+    <div class="article-content container shadow-lg bg-white rounded p-4 mt-4">
+        <div class="article-header mb-2">
+            <div class="title">
+                <h1>{{article.article_title}}</h1>
+            </div>
 
-        <br>
-        <div>
-            <span class="font-weight-bolder">
-                {% if article.user %}
-                    {{article.user.username}}
-                {% else %}
-                    Noname
+            <div class="publish-meta text-secondary font-weight-bolder">
+                <span class="article-author">
+                    {% if article.user %}
+                        {{article.user.username}}
+                    {% else %}
+                        Noname
+                    {% endif %}
+                </span>
+                 ·
+                <span class="article-date ">{{article.pub_date}}</span>
+                {% if article.was_publish_recently %}
+                     ·
+                    <span class="article-new"> New </span>
                 {% endif %}
-            </span>
-            <span class="text-secondary small em">{{article.pub_date}}</span>
-            {% if article.was_publish_recently %}
-                [Новая статья]
-            {% endif %}
+            </div>
+
+
         </div>
-        <h2>{{article.article_title}}</h2>
 
 
-        <p>{{article.article_text|safe}}</p>
+        <div class="content">
+            <p>{{article.article_text|safe}}</p>
+        </div>
 
 
 
 
+
+
+
+    </div>
+    <div class="article-comments container shadow-lg bg-white rounded p-4 mt-4">
+        <a name="comments"></a>
+        <header class="comments-header">
+            <h6>Последние комментарии:</h6>
+        </header>
 
         <hr>
-
-        <a name="comments"></a>
-        <h6>Последние комментарии:</h6>
         {% if last_comments %}
-            <div class="cards">
+<!--            <div class="cards">-->
 
             {% for c in last_comments %}
-                <div class="card mb-3">
+<!--                <div class="card mb-3">-->
 <!--                    <div class="card-header bg-transparent border-primary">-->
-                    <div class="card-body border-primary border-dark">
-                            <p class="card-title"><strong class="text-right">{{c.author_name}}</strong></p>
-<!--                        <hr>-->
-                            <p class="card-text">{{c.comment_text}}</p>
-                    </div>
-                </div>
+<!--                    <div class="card-body border-primary border-dark">-->
+                            <div class="article-comment">
+                                <p class="article-comment-author"><strong class="text-right">{{c.author_name}}</strong>
+                                    <span class="small">{{c.pub_date}}</span>   </p>
+    <!--                        <hr>-->
+                                <p class="article-comment-text card-text">{{c.comment_text}}</p>
+                            </div>
+<!--                    </div>-->
+<!--                </div>-->
             {% endfor %}
-            </div>
+<!--            </div>-->
         {% else %}
             Комментариев пока нет будьте первым =)
         {% endif %}

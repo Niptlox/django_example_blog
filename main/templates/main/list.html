@@ -9,7 +9,7 @@
         <br>
         <div class="cards">
             {% for a in last_articles %}
-                <div class="card mb-3">
+                <article class="card mb-3">
                     <div class="card-header bg-transparent border-primary">
                         {% if a.user %} {{a.user.username}}
                         {% else %} Noname
@@ -29,7 +29,7 @@
 
                         </div>
                     </div>
-                </div>
+                </article>
 
 
             {% endfor %}

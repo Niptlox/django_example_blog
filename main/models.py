@@ -46,6 +46,7 @@ class Comment(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     author_name = models.CharField("имя автора", max_length=50)
     comment_text = models.CharField("текст коментария", max_length=200)
+    pub_date = models.DateTimeField("дата публикации", default=datetime.datetime(2020, 2, 20), null=True)
 
     def __str__(self):
         return self.author_name

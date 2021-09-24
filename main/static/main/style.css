@@ -1,0 +1,20 @@
+.publish-meta {
+    color: #b6b7ba;
+    font-weight: 600;
+    margin-top: -2px;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.article-comment {
+    margin-bottom: 20px;
+}
+
+.article-comment-text {
+    margin-left: 10px;
+}
+
+.article-comment-author {
+    margin-bottom: 5px;
+}
+
