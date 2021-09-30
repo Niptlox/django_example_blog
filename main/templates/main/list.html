@@ -1,39 +1,54 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block title %} Последние статьи {% endblock %}
 
 {% block content %}
-
-    {% if last_articles %}
-        <h2>Последние статьи:</h2>
-        <br>
-        <div class="cards">
-            {% for a in last_articles %}
-                <article class="card mb-3">
+    <script>
+        function addArticleOfList(url, title, intro, img, pub_date, username) {
+            pub_date = new Date(pub_date);
+            if (!username) username = "NoName";
+            html_article = `
+            <article class="card mb-3" id="article">
                     <div class="card-header bg-transparent border-primary">
-                        {% if a.user %} {{a.user.username}}
-                        {% else %} Noname
-                        {% endif %}
-                    </div>
-                    {% if a.introduction_img %}
-                        <img src="{{a.introduction_img}}" class="card-img-top" alt="Img {{a.article_title}}">
-                    {% endif %}
-
+                        ${username}
+                    </div>`
+            if (img){
+                html_article += `<img src="${img}" class="card-img-top" alt="Img ${title}">`
+            }
+            html_article += `
                     <div class="card-body">
-                        <h5 class="card-title">{{a.article_title}}</h5>
-                        <p class="card-text">{{a.article_introduction|safe}}</p>
+                        <h5 class="card-title">${title}</h5>
+                        <p class="card-text">${intro}</p>
                         <div class="row">
-                                <div class="col-auto mr-auto"><a href="{% url 'main:article' a.id %}" class="btn btn-outline-primary">Читать статью</a></div>
-                                <div class="col-auto"><p class="card-text"><small class="text-muted">{{a.pub_date}}</small></p></div>
+                                <div class="col-auto mr-auto"><a href="${url}" class="btn btn-outline-primary">Читать статью</a></div>
+                                <div class="col-auto"><p class="card-text"><small class="text-muted">${pub_date}</small></p></div>
 
 
                         </div>
                     </div>
-                </article>
+            </article>`
+            $("#articles").append(html_article);
+            return html_article
+        }
+
+    </script>
 
 
+    {% if last_articles %}
+        <h2>Последние статьи:</h2>
+        <br>
+        <div class="list-articles cards" id="articles">
+            {% for a in last_articles %}
+                <script>
+                    addArticleOfList(urlOfArticle({{a.id}}), `{{a.article_title}}`, `{{a.article_introduction|safe}}`,
+                                     `{{a.introduction_img}}`, `{{a.pub_date|safe}}`, `{{a.user.username}}`)
+                </script>
             {% endfor %}
         </div>
+        <div class="center" id="end"></div>
+        <script src="{% static 'main/js/articles.js' %}"></script>
     {% else %}
         Статей нет =(
     {% endif %}

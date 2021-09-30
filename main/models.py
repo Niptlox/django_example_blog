@@ -28,6 +28,9 @@ class Article(models.Model):
     introduction_img = models.CharField("картинка вступления", max_length=200, default="", blank=True)
     pub_date = models.DateTimeField("дата публикации")
 
+    def username(self):
+        return self.user.username if self.user else "NoName"
+
     def __str__(self):
         return self.article_title
 
