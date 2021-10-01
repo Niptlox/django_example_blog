@@ -11,6 +11,13 @@ class Profile(models.Model):
     user_img = models.CharField(max_length=200, blank=True)
     bio = models.TextField(max_length=500, blank=True)
 
+    class Status(models.IntegerChoices):
+        ADMIN = 1
+        VISITOR = 10
+        UNKNOWN = 20
+
+    status = models.IntegerField(choices=Status.choices, default=Status.VISITOR)
+
     def __str__(self):
         return self.user.username
 

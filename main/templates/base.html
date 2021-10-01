@@ -14,15 +14,8 @@
 
     <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
 
-    <script>
-        const URL_API_A = "/api/article/";
-        const URL_API_U = "/api/user/";
-<!--        let func = (arg1, arg2, ...argN) => expression -->
-        let urlOfArticle = (aid) => "/article/" + aid.toString();
-        let urlApiOfArticleList = (aid) => URL_API_A + "?i=" + aid.toString();
-        let urlApiOfUser = (uid) => URL_API_U + uid.toString();
-    </script>
 
+    <script src="{% static 'main/js/script.js' %}"></script>
 </head>
 
 <body style="background-color: rgb(238, 240, 242)">

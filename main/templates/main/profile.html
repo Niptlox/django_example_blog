@@ -41,7 +41,7 @@
                     <p>
                         <h5><a href="{% url 'main:article' a.id %}">{{a.article_title}}</a></h5>
                         <a class="bt" href="{% url 'main:article_edit' a.id %}">Редактировать</a>
-                        <a class="bt" href="{% url 'main:article_del' a.id %}">Удалить</a>
+                        <a class="bt" href="{% url 'main:article_del' a.id %}" onclick="return confirm('Удалить статью?')">Удалить</a>
                     </p>
                 {% endfor %}
             {% else %}

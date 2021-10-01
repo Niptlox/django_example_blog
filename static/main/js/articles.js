@@ -1,19 +1,14 @@
-String.format = function() {
-    var s = arguments[0];
-    for (var i = 0; i < arguments.length - 1; i++) {
-    var reg = new RegExp("\\{" + i + "\\}", "gm");
-    s = s.replace(reg, arguments[i + 1]);
-    }
-    return s;
-    }
+
 
 var old_y = 0;
 // last article in list
 var last_art = 5;
+var loading_art = false;
 
 function populate() {
-    if (!isNaN(last_art)){
-            // нижняя граница страницы
+    if (!isNaN(last_art) && !loading_art){
+        //while (loading_art);
+        // нижняя граница страницы
         let windowRelativeBottom = document.documentElement.getBoundingClientRect().bottom;
 
         let article_height = document.getElementById( 'end' ).getBoundingClientRect().x;
@@ -28,6 +23,7 @@ function populate() {
 
         console.log(url_article);
         first_last_art = last_art
+        loading_art = true;
         $.getJSON(url_article , function ( data, textStatus, jqXHR ) { // указываем url и функцию обратного вызова
             for ( key in data ) { // создаем цикл for in
                 a = data[key];
@@ -37,11 +33,15 @@ function populate() {
                 last_art += 1
 
             };
-            
+            console.log('1======= ' + last_art)
+            if (first_last_art == last_art){
+                last_art = NaN
+            };
+            loading_art = false;
+            console.log('2======= ' + last_art)
+            populate();
         })
-        if (first_last_art == last_art){
-            last_art = NaN
-        }
+        
         
     }
 
